@@ -1265,6 +1265,7 @@ public class MinesweeperGUI extends JPanel {
                         }
                     }
                     case TURN -> {
+                        System.out.println("MinesweeperGUI Turn activated");
                         btn.setIcon(null);
                         btn.setText("");
                         btn.setFill(mineGlass);
