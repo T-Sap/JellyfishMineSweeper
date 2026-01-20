@@ -15,7 +15,7 @@ public enum Difficulty {
     private final int initialLives;
     private final int powerCost;       // מחיר הפעלת שאלה/הפתעה
     private final int surprisePoints;  // כמה נקודות הפתעה טובה/רעה נותנת (+/-)
-
+    private final int turnCount;
     Difficulty(int rows, int cols, int mines,
                int questionCount, int surpriseCount,
                int initialLives, int powerCost,
@@ -28,6 +28,7 @@ public enum Difficulty {
         this.initialLives = initialLives;
         this.powerCost = powerCost;
         this.surprisePoints = surprisePoints;
+        this.turnCount = 5; //for now i just decided this is cool. i guess.
     }
 
     public int getRows()          { return rows; }
@@ -38,4 +39,6 @@ public enum Difficulty {
     public int getInitialLives()  { return initialLives; }
     public int getPowerCost()     { return powerCost; }
     public int getSurprisePoints(){ return surprisePoints; }
+    public int getTurnCount(){ return turnCount; }
+
 }

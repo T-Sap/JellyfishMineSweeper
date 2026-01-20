@@ -310,7 +310,9 @@ public class MainMenuGUI extends JFrame {
     public void startGame(String player1Name, String player2Name, Difficulty difficulty) {
         Board board1 = new Board(difficulty);
         Board board2 = new Board(difficulty);
-        GameSession session = new GameSession(difficulty);
+        GameSession session = GameSession.getInstance();
+        session.setDifficulty(difficulty);
+        session.setLives();
 
         gamePanel = new MinesweeperGUI(this, player1Name, player2Name, board1, board2, session);
 

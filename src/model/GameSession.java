@@ -5,12 +5,13 @@ import java.util.List;
 
 public class GameSession {
 
-    private final Difficulty difficulty;
+    private Difficulty difficulty;
 
     private int score;        // pts – משותף לשני השחקנים
     private int lives;        // hearts – משותף
     private final int maxLives;
-
+    private int turns;
+    private static GameSession instance = null;
     private List<GameObserver> observers = new ArrayList<>();
 
     public void addObserver(GameObserver o) {
@@ -23,13 +24,18 @@ public class GameSession {
         }
     }
 
-    public GameSession(Difficulty difficulty) {
-        this.difficulty = difficulty;
-        this.lives = difficulty.getInitialLives();  // מתחילים לפי רמת הקושי
+    private GameSession() {
         this.maxLives = 10;                         // המקסימום תמיד 10
         this.score = 0;
+        this.turns = 0;
     }
 
+    public static GameSession getInstance() {
+        if (instance == null) {
+            instance = new GameSession();
+        }
+        return instance;
+    }
     // --- getters לצורך GUI/Controller ---
 
     public int getScore() {
@@ -233,5 +239,24 @@ public class GameSession {
             score += lives * difficulty.getPowerCost();
             lives = 0;
         }
+    }
+
+    public void setDifficulty(Difficulty difficulty){
+        this.difficulty = difficulty;
+    }
+
+    public void setLives(){
+        this.lives = difficulty.getInitialLives();
+    }
+
+    public int getTurns() {
+        return this.turns;
+    }
+    public void useTurn() {
+        if(this.getTurns() < 1){
+            System.out.println("ERROR. tried to use turns it didnt have");
+        }
+        this.turns -= 1;
+        return;
     }
 }

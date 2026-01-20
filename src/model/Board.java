@@ -13,6 +13,7 @@ public class Board {
     private final int totalMines;
     private final int questionCount;
     private final int surpriseCount;
+    private final int turnCount;
 
     private final Cell[][] grid;
     private final Random random = new Random();
@@ -23,6 +24,7 @@ public class Board {
         this.totalMines    = difficulty.getMines();
         this.questionCount = difficulty.getQuestionCount();
         this.surpriseCount = difficulty.getSurpriseCount();
+        this.turnCount = difficulty.getTurnCount();
 
         this.grid = new Cell[rows][cols];
 
@@ -46,8 +48,8 @@ public class Board {
     // מפזר מוקשים באקראי בלי כפילויות
     private void placeMinesRandomly() {
         int minesPlaced = 0;
-
-        while (minesPlaced < totalMines) {
+        int overflow_protection = 0;
+        while (minesPlaced < totalMines && overflow_protection < 10000) {
             int r = random.nextInt(rows);
             int c = random.nextInt(cols);
 
@@ -55,6 +57,7 @@ public class Board {
                 grid[r][c].setType(CellType.MINE);
                 minesPlaced++;
             }
+            overflow_protection++;
         }
     }
 
@@ -122,6 +125,11 @@ public class Board {
         for (int i = 0; i < surpriseCount && idx < emptyCells.size(); i++, idx++) {
             int[] pos = emptyCells.get(idx);
             grid[pos[0]][pos[1]].setType(CellType.SURPRISE);
+        }
+
+        for (int i = 0; i < turnCount && idx < emptyCells.size(); i++, idx++) {
+            int[] pos = emptyCells.get(idx);
+            grid[pos[0]][pos[1]].setType(CellType.TURN);
         }
     }
 
@@ -565,6 +573,19 @@ public class Board {
                 cell.setRevealed(true);
             }
         }
+    }
+    
+    private List<int[]> getAllEmptyCells(){
+        List<int[]> emptyCells = new ArrayList<>();
+
+        for (int r = 0; r < rows; r++) {
+            for (int c = 0; c < cols; c++) {
+                if (grid[r][c].getType() == CellType.EMPTY) {
+                    emptyCells.add(new int[]{r, c});
+                }
+            }
+        }
+        return emptyCells;
     }
 
 }

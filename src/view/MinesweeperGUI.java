@@ -104,6 +104,8 @@ public class MinesweeperGUI extends JPanel {
     private final ImageIcon ICON_SURPRISE  = loadIcon("/images/surprise.png");
     private final ImageIcon ICON_MINE      = loadIcon("/images/Boom.png");
     private final ImageIcon ICON_FLAG      = loadIcon("/images/flag.png");
+    private final ImageIcon ICON_TURN      = loadIcon("/images/Turn.png");
+
     // Gift icons (loaded from /images/)
     private final ImageIcon ICON_GIFT_CLOSED = loadIcon("/images/gift_closed.png");
     private final ImageIcon ICON_GIFT_OPEN   = loadIcon("/images/gift_open.png");
@@ -1261,6 +1263,13 @@ public class MinesweeperGUI extends JPanel {
                             btn.setScaledIcon(ICON_SURPRISE);
                             btn.setTextColor(Color.WHITE);
                         }
+                    }
+                    case TURN -> {
+                        btn.setIcon(null);
+                        btn.setText("");
+                        btn.setFill(mineGlass);
+                        btn.setScaledIcon(ICON_TURN);
+                        btn.setTextColor(Color.BLACK);
                     }
                 }
             }

@@ -317,7 +317,11 @@ public class MinesweeperController {
             view.showGameOver(false);
             return;
         }
-
+        //this will support the new accumulated turns logic.
+        if(GameSession.getInstance().getTurns() > 0){
+            GameSession.getInstance().useTurn();
+            return;
+        }
         player1Turn = !player1Turn;
         view.updateTurnHighlight();
         view.refreshView();
