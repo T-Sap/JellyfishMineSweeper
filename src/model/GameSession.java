@@ -259,4 +259,8 @@ public class GameSession {
         this.turns -= 1;
         return;
     }
+    public void addTurn() {
+        this.turns += 1;
+        return;
+    }
 }

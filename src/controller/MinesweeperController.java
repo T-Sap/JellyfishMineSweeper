@@ -83,6 +83,7 @@ public class MinesweeperController {
     // Click handling
     public void handleLeftClick(boolean firstBoard, int row, int col) {
         if (paused) return;
+        System.out.println("1");
 
         Board board = firstBoard ? board1 : board2;
         Cell cell = board.getCell(row, col);
@@ -192,6 +193,17 @@ public class MinesweeperController {
                         OVERLAY_SECONDS
                 );
                 endTurn();
+                return;
+            }
+
+            //
+            if (cell.getType() == CellType.TURN) {
+                System.out.println("Some1 clicked the TURN tile");
+                SoundManager sm = SoundManager.getInstance();
+                sm.playQuestionLoop(); //it can have the question sound
+                board.markSpecialUsed(row, col);
+                GameSession.getInstance().addTurn();
+                view.refreshView();
                 return;
             }
 
