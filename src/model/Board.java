@@ -376,7 +376,8 @@ public class Board {
         return cell.isRevealed()
                 && !cell.isPowerUsed()
                 && (cell.getType() == CellType.QUESTION
-                    || cell.getType() == CellType.SURPRISE);
+                    || cell.getType() == CellType.SURPRISE
+                    || cell.getType() == CellType.TURN);
     }
 
     /** סימון התא כ־USED אחרי שהופעלה השאלה/הפתעה */
