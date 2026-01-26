@@ -50,6 +50,7 @@ public class MinesweeperGUI extends JPanel {
     // Used icons (after activation)
     private final ImageIcon ICON_QUESTION_USED = loadIcon("/images/question_used.png");
     private final ImageIcon ICON_SURPRISE_USED = loadIcon("/images/gift_open.png");
+    private final ImageIcon ICON_TURN_USED = loadIcon("/images/turn_used.png");
 
     // Overlay font sizing
     private static final int OVERLAY_TITLE_MAX = 24;
@@ -1265,12 +1266,18 @@ public class MinesweeperGUI extends JPanel {
                         }
                     }
                     case TURN -> {
-                        System.out.println("MinesweeperGUI Turn activated");
                         btn.setIcon(null);
                         btn.setText("");
-                        btn.setFill(mineGlass);
-                        btn.setScaledIcon(ICON_TURN);
-                        btn.setTextColor(Color.BLACK);
+                        if (cell.isPowerUsed()) {
+                            btn.setFill(usedGlass);
+                            btn.setTextColor(textOnGlass);
+                            // Show your new used turn icon
+                            btn.setScaledIcon(ICON_TURN_USED);
+                        } else {
+                            btn.setFill(mineGlass);
+                            btn.setScaledIcon(ICON_TURN);
+                            btn.setTextColor(Color.BLACK);
+                        }
                     }
                 }
             }

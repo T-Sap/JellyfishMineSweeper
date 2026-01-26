@@ -196,14 +196,29 @@ public class MinesweeperController {
                 return;
             }
 
-            //
+            // ===== TURN =====
             if (cell.getType() == CellType.TURN) {
-                System.out.println("Some1 clicked the TURN tile");
                 SoundManager sm = SoundManager.getInstance();
-                sm.playQuestionLoop(); //it can have the question sound
-                board.markSpecialUsed(row, col);
+                sm.playGoodSurpriseThenResumeGame(); // Positive feedback
+
+                board.markSpecialUsed(row, col); // Makes it unclickable after use
                 GameSession.getInstance().addTurn();
+
+                int outcomeDeltaScore = session.getScore() - scoreAfterPay;
+                int outcomeDeltaLives = session.getLives() - livesAfterPay;
+
+                // Send message to user with remaining turns
+                String msg = "Turns left: " + session.getTurns();
+
+                view.showResultOverlay(
+                        MinesweeperGUI.OverlayType.GOOD,
+                        "EXTRA TURN!",
+                        msg + "  |  " + formatPowerSubtitle(payDeltaScore, payDeltaLives, outcomeDeltaScore, outcomeDeltaLives, null),
+                        OVERLAY_SECONDS
+                );
+
                 view.refreshView();
+                // Return explicitly without calling endTurn() to let player continue immediately
                 return;
             }
 
@@ -330,8 +345,13 @@ public class MinesweeperController {
             return;
         }
         //this will support the new accumulated turns logic.
-        if(GameSession.getInstance().getTurns() > 0){
-            GameSession.getInstance().useTurn();
+        if (session.getTurns() > 0) {
+            int before = session.getTurns();
+            session.useTurn();
+            int after = session.getTurns();
+            // Inform the player that a stored turn was consumed and how many remain
+            view.showToast("Stored turn used — remaining turns: " + after, 1600);
+            view.refreshView();
             return;
         }
         player1Turn = !player1Turn;
@@ -347,12 +367,12 @@ public class MinesweeperController {
 
         if (payDeltaScore != 0 || payDeltaLives != 0) {
             sb.append("Activation: ")
-              .append(formatDelta(payDeltaScore, payDeltaLives));
+                    .append(formatDelta(payDeltaScore, payDeltaLives));
         }
 
         if (sb.length() > 0) sb.append("  |  ");
         sb.append("Outcome: ")
-          .append(formatDelta(outcomeDeltaScore, outcomeDeltaLives));
+                .append(formatDelta(outcomeDeltaScore, outcomeDeltaLives));
 
         if (bonus != null && bonus != QuestionBonusEffect.NONE) {
             sb.append("  |  Bonus: ").append(shortBonusName(bonus));
