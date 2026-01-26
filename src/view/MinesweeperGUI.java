@@ -601,6 +601,11 @@ public class MinesweeperGUI extends JPanel {
                 g2.setColor(new Color(0, 0, 0, 140));
                 g2.fillRect(0, 0, getWidth(), getHeight());
                 g2.dispose();
+
+                // these mouse events are consumed to block interaction with underlying UI
+                MouseAdapter adapter = new MouseAdapter() {};
+                overlayRoot.addMouseListener(adapter);
+                overlayRoot.addMouseMotionListener(adapter);
             }
         };
         overlayRoot.setOpaque(false);
@@ -1272,7 +1277,7 @@ public class MinesweeperGUI extends JPanel {
                         if (cell.isPowerUsed()) {
                             btn.setFill(usedGlass);
                             btn.setTextColor(textOnGlass);
-                            // Show your new used turn icon
+                            // Show new used turn icon
                             btn.setScaledIcon(ICON_TURN_USED);
                         } else {
                             btn.setFill(mineGlass);
