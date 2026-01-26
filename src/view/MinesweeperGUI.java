@@ -321,16 +321,27 @@ public class MinesweeperGUI extends JPanel {
                 if (mainPanel != null) mainPanel.setBounds(0, 0, w, h);
                 if (overlayRoot != null) overlayRoot.setBounds(0, 0, w, h);
 
-                if (toastPanel != null) {
-                    int tw = toastPanel.getWidth();
-                    int th = toastPanel.getHeight();
-                    if (tw <= 0 || th <= 0) { // safety (first layout)
-                        Dimension d = toastPanel.getPreferredSize();
-                        if (d != null) { tw = d.width; th = d.height; }
-                    }
-                    //changed toast placement for better visibility
-                    int x = (int)(w * 0.5);
-                    int y = 600;
+                if (toastPanel != null && livesHeartsPanel != null && scoreChip != null) {
+                    Dimension td = toastPanel.getPreferredSize();
+                    int tw = td.width;
+                    int th = td.height;
+
+                    // find the edges of the livesHeartsPanel and scoreChip
+                    Point livesLoc = SwingUtilities.convertPoint(livesHeartsPanel.getParent(), livesHeartsPanel.getLocation(), layeredPane);
+                    Point scoreLoc = SwingUtilities.convertPoint(scoreChip.getParent(), scoreChip.getLocation(), layeredPane);
+
+                    int livesRightEdge = livesLoc.x + livesHeartsPanel.getWidth();
+                    int scoreLeftEdge = scoreLoc.x;
+
+                    int gapPadding = 80; // add some padding to make sure it fits in all difficulties
+                    int availableGap = (scoreLeftEdge - gapPadding) - (livesRightEdge + gapPadding);
+
+                    //center the toast
+                    int centerX = livesRightEdge + (availableGap / 2);
+
+                    //align the toast above the bottom bar with some padding
+                    int x = centerX - (tw / 2);
+                    int y = livesLoc.y + (livesHeartsPanel.getHeight() / 2) - (th / 2);
                     toastPanel.setBounds(x, y, tw, th);
                 }
             }
@@ -361,21 +372,16 @@ public class MinesweeperGUI extends JPanel {
         // --- auto width based on text ---
         FontMetrics fm = toastLabel.getFontMetrics(toastLabel.getFont());
         int textW = fm.stringWidth(text);
-
-        int minW = 240;
-        int maxW = 520;
-        int padding = 28;
-
-        int w = Math.min(maxW, Math.max(minW, textW + padding));
-
+        // width
+        int w = Math.min(520, Math.max(240, textW + 40));
         // height
         int h = 44;
 
         toastPanel.setPreferredSize(new Dimension(w, h));
-        toastPanel.setSize(new Dimension(w, h));
-        toastPanel.revalidate();
 
-        if (layeredPane != null) layeredPane.doLayout();
+        layeredPane.revalidate();
+        layeredPane.repaint();
+
 
         toastPanel.setVisible(true);
         toastPanel.repaint();
