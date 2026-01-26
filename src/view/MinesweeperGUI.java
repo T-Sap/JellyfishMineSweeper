@@ -328,8 +328,9 @@ public class MinesweeperGUI extends JPanel {
                         Dimension d = toastPanel.getPreferredSize();
                         if (d != null) { tw = d.width; th = d.height; }
                     }
-                    int x = w - tw - 20;
-                    int y = 90;
+                    //changed toast placement for better visibility
+                    int x = (int)(w * 0.5);
+                    int y = 600;
                     toastPanel.setBounds(x, y, tw, th);
                 }
             }

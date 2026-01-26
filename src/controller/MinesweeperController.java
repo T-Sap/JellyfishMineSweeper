@@ -350,7 +350,7 @@ public class MinesweeperController {
             session.useTurn();
             int after = session.getTurns();
             // Inform the player that a stored turn was consumed and how many remain
-            view.showToast("Stored turn used — remaining turns: " + after, 1600);
+            view.showToast("Stored turn used - remaining extra turns: " + after, 3000);
             view.refreshView();
             return;
         }

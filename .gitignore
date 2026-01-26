@@ -23,3 +23,7 @@
 hs_err_pid*
 replay_pid*
 /bin/
+/.idea
+.idea/material_theme_project_new.xml
+.project
+/.idea
